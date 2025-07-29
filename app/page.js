@@ -1,22 +1,33 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import EarlyAccessSection from "@/component/EarlyAccessSection";
 import FeaturesSection from "@/component/FeaturesSection";
 import ImageSelectionSection from "@/component/ImageSelectionSection";
 import Navbar from "@/component/Navbar";
-import Image from "next/image";
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000); // 2 seconds delay
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500 border-solid"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative font-sans bg-white text-gray-800 overflow-hidden">
       {/* Animated Background Blobs */}
-
-
       <div className="absolute top-0 -left-32 w-[400px] h-[400px] bg-orange-200 rounded-full rotate-12 opacity-60 z-0 animate-blob-1"></div>
       <div className="absolute bottom-[-100px] right-[-80px] w-[500px] h-[500px] bg-indigo-200 rounded-full -rotate-45 opacity-70 z-0 animate-blob-2"></div>
       <div className="absolute top-[400px] left-[30%] w-[300px] h-[300px] bg-yellow-100 rounded-full rotate-45 opacity-50 z-0 animate-blob-3"></div>
-
-
 
       {/* Main content */}
       <div className="relative z-10 px-6 sm:px-12 lg:px-24 pt-24 pb-16 space-y-32 max-w-screen-xl mx-auto">
@@ -51,18 +62,17 @@ export default function Home() {
 
         {/* FEATURES SECTION */}
         <FeaturesSection />
-
-        {/* EARLY ACCESS */}
       </div>
 
       {/* Image Selection Section */}
       <div className="relative z-20 w-full bg-white">
         <ImageSelectionSection />
       </div>
- <div className="relative z-10 px-4 sm:px-8 lg:px-12 pt-24 pb-20 space-y-16 max-w-screen-xl mx-auto">
-   <EarlyAccessSection />
- </div>
-             
+
+      {/* Early Access Section */}
+      <div className="relative z-10 px-4 sm:px-8 lg:px-12 pt-24 pb-20 space-y-16 max-w-screen-xl mx-auto">
+        <EarlyAccessSection />
+      </div>
     </div>
   );
 }
