@@ -5,6 +5,7 @@ import EarlyAccessSection from "@/component/EarlyAccessSection";
 import FeaturesSection from "@/component/FeaturesSection";
 import ImageSelectionSection from "@/component/ImageSelectionSection";
 import Navbar from "@/component/Navbar";
+import FestivalSlideshow from "@/component/FestivalSlideshow";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -45,29 +46,35 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Right Video */}
-          <div className="flex-1 flex justify-center">
-            <video
-              src="/smartphone2.mp4"
-              width={300}
-              height={800}
-              className="object-contain w-[200px] sm:w-[300px] md:w-[360px] lg:w-[360px]"
-              autoPlay
-              loop
-              muted
-              playsInline
-            />
-          </div>
-        </section>
+  {/* Right Video (unchanged) */}
+  <div className="flex-1 flex justify-center">
+    <video
+      src="/smartphone2.mp4"
+      width={300}
+      height={800}
+      className="object-contain w-[200px] sm:w-[300px] md:w-[360px] lg:w-[360px]"
+      autoPlay
+      loop
+      muted
+      playsInline
+    />
+  </div>
+</section>
+
+
 
         {/* FEATURES SECTION */}
-        <FeaturesSection />
+        {/* <FeaturesSection /> */}
       </div>
+     <FestivalSlideshow />
+
 
       {/* Image Selection Section */}
       <div className="relative z-20 w-full bg-white">
         <ImageSelectionSection />
       </div>
+
+     
 
       {/* Early Access Section */}
       <div className="relative z-10 px-4 sm:px-8 lg:px-12 pt-24 pb-20 space-y-16 max-w-screen-xl mx-auto">
