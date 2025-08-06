@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import "./FestivalSlideshow.css"; // Custom CSS for keyframes
 
 const images = [
@@ -26,38 +25,36 @@ export default function FestivalSlideshow() {
         </p>
       </div>
 
+      {/* Slideshow row 1 */}
       <div className="relative overflow-hidden h-[240px]">
         <div className="absolute flex animate-slideLeft space-x-[15px] items-center min-w-max">
           {[...images, ...images].map((src, i) => (
             <div
               key={`row1-${i}`}
-              className="flex-shrink-0 relative h-[220px] min-w-[260px] overflow-hidden rounded-2xl"
+              className="flex-shrink-0 relative h-[220px] w-[260px] overflow-hidden rounded-2xl"
             >
-              <Image
+              <img
                 src={src}
                 alt={`Group ${i}`}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 260px"
+                className="object-cover w-full h-full rounded-2xl"
               />
             </div>
           ))}
         </div>
       </div>
 
+      {/* Slideshow row 2 */}
       <div className="relative overflow-hidden h-[240px]">
         <div className="absolute flex animate-slideRight space-x-[15px] items-center min-w-max">
           {[...images, ...images].map((src, i) => (
             <div
               key={`row2-${i}`}
-              className="flex-shrink-0 relative h-[220px] min-w-[260px] overflow-hidden rounded-2xl"
+              className="flex-shrink-0 relative h-[220px] w-[260px] overflow-hidden rounded-2xl"
             >
-              <Image
+              <img
                 src={src}
                 alt={`Group ${i}`}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 260px"
+                className="object-cover w-full h-full rounded-2xl"
               />
             </div>
           ))}

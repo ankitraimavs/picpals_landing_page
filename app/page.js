@@ -66,11 +66,10 @@ export default function Home() {
         {/* FEATURES SECTION */}
         {/* <FeaturesSection /> */}
       </div>
-     <FestivalSlideshow />
-
+      <FestivalSlideshow/>
 
       {/* Image Selection Section */}
-      <div className="relative z-20 w-full bg-white">
+      <div className="relative z-20 mt-5 w-full bg-white">
         <ImageSelectionSection />
       </div>
 
