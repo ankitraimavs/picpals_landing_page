@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function EarlyAccessSection() {
   const [submitted, setSubmitted] = useState(false);
+  const emailRef = useRef(null); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = e.target[0].value;
+    const email = emailRef.current.value; 
 
     try {
       const formData = new FormData();
@@ -21,6 +22,7 @@ export default function EarlyAccessSection() {
       if (!res.ok) throw new Error("Network response was not ok");
 
       setSubmitted(true);
+      emailRef.current.value = ""; 
     } catch (err) {
       console.error("Failed to submit email:", err);
       alert("Something went wrong. Please try again later.");
@@ -34,25 +36,24 @@ export default function EarlyAccessSection() {
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#D8B4FE] opacity-30 rounded-full blur-3xl z-0 animate-blob-2" />
 
       <div className="relative z-10 max-w-4xl mx-auto text-center">
-        {/* Launch Tag */}
         <div className="inline-block bg-[#F97316] text-white px-4 py-1 rounded-full text-sm font-semibold mb-4 shadow-md">
-          We're Launching our Mobile App
+          We're Launching Our Mobile App
         </div>
 
         <h2 className="text-4xl sm:text-5xl font-extrabold text-[#7C2D12] mb-6">
-          Bridge the distance, Frame the bond.
+          Join the Waitlist Today
         </h2>
 
         <p className="text-lg text-gray-800 mb-8">
-         Join the waitlist today to secure early access, receive exclusive launch credits, and reserve your spot ahead of the crowd.
+          Don’t miss out — get early access and exclusive previews before launch.
         </p>
 
-        {/* Email Input */}
         <form
           onSubmit={handleSubmit}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6"
         >
           <input
+            ref={emailRef} 
             type="email"
             required
             placeholder="Enter your email"
@@ -72,7 +73,6 @@ export default function EarlyAccessSection() {
           </p>
         )}
 
-        {/* Store Badges with Same Aspect Ratio */}
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6">
           <div className="h-12 w-40 flex items-center justify-center">
             <img
