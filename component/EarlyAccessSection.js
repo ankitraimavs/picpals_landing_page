@@ -5,102 +5,126 @@ import { useState } from "react";
 export default function EarlyAccessSection() {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    const email = e.target[0].value;
+
+    try {
+      const formData = new FormData();
+      formData.append("email", email);
+
+      const res = await fetch("https://picpals.api.yonderwonder.ai/api/save-email", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Network response was not ok");
+
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Failed to submit email:", err);
+      alert("Something went wrong. Please try again later.");
+    }
   };
 
   return (
-    <section className="relative bg-gradient-to-tr from-orange-50 to-indigo-50 py-20 px-6 sm:px-12 lg:px-24 rounded-3xl shadow-lg overflow-hidden mt-20">
-      {/* Orange Blob - Moves */}
-      <div className="absolute w-72 h-72 bg-orange-400 opacity-40 rounded-full blur-2xl animate-blob-1 z-0"></div>
+    <section className="relative py-24 px-6 sm:px-12 lg:px-24 bg-[#FFF7ED] text-gray-900 overflow-hidden rounded-3xl shadow-2xl mt-10">
+      {/* Animated Blobs */}
+      <div className="absolute top-0 left-0 w-80 h-80 bg-[#FDBA74] opacity-30 rounded-full blur-3xl z-0 animate-blob-1" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#D8B4FE] opacity-30 rounded-full blur-3xl z-0 animate-blob-2" />
 
-      {/* Yellow Blob - Moves */}
-      <div className="absolute w-72 h-72 bg-yellow-300 opacity-40 rounded-full blur-2xl animate-blob-2 z-0"></div>
+      <div className="relative z-10 max-w-4xl mx-auto text-center">
+        {/* Launch Tag */}
+        <div className="inline-block bg-[#F97316] text-white px-4 py-1 rounded-full text-sm font-semibold mb-4 shadow-md">
+          We're Launching on App Stores!
+        </div>
 
-      <div className="relative z-10 text-center max-w-2xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl font-bold text-orange-600 mb-6">
-          Be the First to Try It!
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-[#7C2D12] mb-6">
+          Be the First to Experience the Magic
         </h2>
-        <p className="text-gray-700 mb-10">
-          Sign up now to get early access and be notified when we launch. Experience the future of mobile magic.
+
+        <p className="text-lg text-gray-800 mb-8">
+          Join the early access list for our mobile app and discover the next big thing in creative photo-sharing.
         </p>
 
+        {/* Email Input */}
         <form
-          className="flex flex-col sm:flex-row items-center gap-4 justify-center"
           onSubmit={handleSubmit}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6"
         >
           <input
             type="email"
             required
-            placeholder="you@example.com"
-            className="w-full sm:w-[300px] px-4 py-3 rounded-full border border-gray-300 focus:ring-2 focus:ring-orange-400 outline-none transition"
+            placeholder="Enter your email"
+            className="w-full sm:w-[300px] px-5 py-3 rounded-full border border-orange-300 shadow-md focus:ring-2 focus:ring-[#F97316] outline-none transition"
           />
           <button
             type="submit"
-            className="px-6 py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600 transition"
+            className="px-6 py-3 rounded-full bg-[#F97316] text-white font-semibold hover:bg-[#ea580c] transition shadow-md"
           >
             Notify Me
           </button>
         </form>
 
         {submitted && (
-          <p className="text-sm text-green-600 mt-4">
-            Thanks! We'll let you know soon 🎉
+          <p className="text-sm text-green-600 font-medium">
+            You're on the list! We’ll keep you posted.
           </p>
         )}
+
+        {/* Store Badges with Same Aspect Ratio */}
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6">
+          <div className="h-12 w-40 flex items-center justify-center">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+              alt="Get it on Google Play"
+              className="h-full object-contain"
+            />
+          </div>
+          <div className="h-12 w-40 flex items-center justify-center">
+            <img
+              src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+              alt="Download on the App Store"
+              className="h-full object-contain"
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Blob animation styles */}
-    <style jsx>{`
-  @keyframes blob1 {
-    0% {
-      transform: translate(-150px, -100px) scale(1);
-    }
-    25% {
-      transform: translate(100px, 50px) scale(1.1);
-    }
-    50% {
-      transform: translate(200px, -100px) scale(0.9);
-    }
-    75% {
-      transform: translate(-50px, 100px) scale(1.2);
-    }
-    100% {
-      transform: translate(-150px, -100px) scale(1);
-    }
-  }
+      {/* Animation Styles */}
+      <style jsx>{`
+        @keyframes blob1 {
+          0% {
+            transform: translate(-100px, -50px) scale(1);
+          }
+          50% {
+            transform: translate(50px, 20px) scale(1.1);
+          }
+          100% {
+            transform: translate(-100px, -50px) scale(1);
+          }
+        }
 
-  @keyframes blob2 {
-    0% {
-      transform: translate(150px, 100px) scale(1);
-    }
-    25% {
-      transform: translate(-100px, -50px) scale(1.1);
-    }
-    50% {
-      transform: translate(-200px, 100px) scale(0.9);
-    }
-    75% {
-      transform: translate(50px, -100px) scale(1.2);
-    }
-    100% {
-      transform: translate(150px, 100px) scale(1);
-    }
-  }
+        @keyframes blob2 {
+          0% {
+            transform: translate(100px, 50px) scale(1);
+          }
+          50% {
+            transform: translate(-30px, -80px) scale(1.2);
+          }
+          100% {
+            transform: translate(100px, 50px) scale(1);
+          }
+        }
 
-  .animate-blob-1 {
-    animation: blob1 40s ease-in-out infinite;
-    top: 0;
-    left: 0;
-  }
+        .animate-blob-1 {
+          animation: blob1 30s ease-in-out infinite;
+        }
 
-  .animate-blob-2 {
-    animation: blob2 50s ease-in-out infinite;
-    bottom: 0;
-    right: 0;
-  }
-`}</style>
+        .animate-blob-2 {
+          animation: blob2 40s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
 }
