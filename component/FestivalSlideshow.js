@@ -23,7 +23,7 @@ const outputImages = [
 
 export default function FestivalSlideshow() {
   return (
-    <section className="bg-[#FF8A33] text-white py-20 px-6 sm:px-12 lg:px-24">
+    <section className="bg-gradient-to-br from-orange-300/75 via-orange-500/85 to-red-500/80 text-white py-20 px-6 sm:px-12 lg:px-24">
       {/* Heading */}
       <div className="text-center mb-16 animate-fadeIn">
         <h2 className="text-4xl sm:text-5xl font-extrabold mb-4">
