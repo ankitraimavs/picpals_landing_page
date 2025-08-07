@@ -28,7 +28,7 @@ export default function EarlyAccessSection() {
   };
 
   return (
-    <section className="relative py-24 px-6 sm:px-12 lg:px-24 bg-[#FFF7ED] text-gray-900 overflow-hidden rounded-3xl shadow-2xl mt-10">
+    <section className="relative py-28 px-6 sm:px-12 lg:px-24 bg-[#FFF7ED] text-gray-900 overflow-hidden rounded-3xl shadow-2xl mt-10">
       {/* Animated Blobs */}
       <div className="absolute top-0 left-0 w-80 h-80 bg-[#FDBA74] opacity-30 rounded-full blur-3xl z-0 animate-blob-1" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#D8B4FE] opacity-30 rounded-full blur-3xl z-0 animate-blob-2" />
@@ -36,15 +36,15 @@ export default function EarlyAccessSection() {
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         {/* Launch Tag */}
         <div className="inline-block bg-[#F97316] text-white px-4 py-1 rounded-full text-sm font-semibold mb-4 shadow-md">
-          We're Launching on App Stores!
+          We're Launching our Mobile App
         </div>
 
         <h2 className="text-4xl sm:text-5xl font-extrabold text-[#7C2D12] mb-6">
-          Be the First to Experience the Magic
+          Bridge the distance, Frame the bond.
         </h2>
 
         <p className="text-lg text-gray-800 mb-8">
-          Join the early access list for our mobile app and discover the next big thing in creative photo-sharing.
+         Join the waitlist today to secure early access, receive exclusive launch credits, and reserve your spot ahead of the crowd.
         </p>
 
         {/* Email Input */}

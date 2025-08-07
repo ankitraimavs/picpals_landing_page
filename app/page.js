@@ -27,19 +27,19 @@ export default function Home() {
     <div className="relative font-sans bg-white text-gray-800 overflow-hidden">
 
 
-      {/* Main content */}
+
       <div className="relative z-10 px-6 sm:px-12 lg:px-24 pt-24 pb-16 space-y-32 max-w-screen-xl mx-auto">
         <Navbar />
 
-        {/* HERO SECTION */}
+
         <section className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 md:gap-20">
-          {/* Left Text */}
+
           <div className="flex-1 text-center md:text-left">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-orange-600 leading-tight">
               Snap Together, Even When Apart!
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-xl mx-auto md:mx-0">
-              Turn solo shots into stunning shared moments with AI magic. Upload two photos and let our app create a beautiful group photo that brings you together.
+              Turn solo shots into stunning shared moments with AI. Upload two photos and let our app create a beautiful group photo that brings you together.
             </p>
           </div>
 
@@ -59,9 +59,6 @@ export default function Home() {
 </section>
 
 
-
-        {/* FEATURES SECTION */}
-        {/* <FeaturesSection /> */}
       </div>
       <FestivalSlideshow/>
 

@@ -4,28 +4,25 @@ import { useState, useRef } from "react";
 import { CheckCircle, UploadCloud, Loader2 } from "lucide-react";
 
 const sampleImages = [
-  "/group-photo/group-photo-1.jpg",
-  "/group-photo/group-photo-2.jpg",
+  "/group-photo/sample-1.jpg",
+  "/group-photo/sample-2.jpg",
 ];
 
 const promptOptions = [
   {
     label: "Raksha Bandhan - Traditional",
-    prompt:
-      "A warm Raksha Bandhan moment captured in a traditionally decorated Indian living room...",
-    output: "/group-photo/group-photo-2.jpg", 
+    prompt: "A warm Raksha Bandhan moment captured in a traditionally decorated Indian living room...",
+    output: "/group-photo/sample-rakhi-1.jpg",
   },
   {
     label: "Graduation Celebration",
-    prompt:
-      "A joyful graduation scene with two friends in black graduation robes...",
-    output: "/group-photo/group-photo-2.jpg",
+    prompt: "A joyful graduation scene with two friends in black graduation robes...",
+    output: "/group-photo/sample-rakhi-2.jpg",
   },
   {
     label: "Birthday Bash - Colorful Fun",
-    prompt:
-      "A vibrant birthday celebration in a garden setting...",
-    output: "/group-photo/group-photo-2.jpg",
+    prompt: "A vibrant birthday celebration in a garden setting...",
+    output: "/group-photo/sample-rakhi-3.jpg",
   },
 ];
 
@@ -37,7 +34,7 @@ export default function ImageSelectionSection() {
   const [prompt, setPrompt] = useState(promptOptions[0].prompt);
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
-
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const fileInputs = [useRef(null), useRef(null)];
 
@@ -60,27 +57,25 @@ export default function ImageSelectionSection() {
   const handleProcess = async () => {
     setIsLoading(true);
     setProcessedImage(null);
-      setCountdown(120); 
+    setCountdown(120);
 
-
-  const interval = setInterval(() => {
-    setCountdown((prev) => {
-      if (prev <= 1) {
-        clearInterval(interval);
-        return 0;
-      }
-      return prev - 1;
-    });
-  }, 1000);
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
     if (!useCustom) {
-
       const selectedPrompt = promptOptions.find((opt) => opt.prompt === prompt);
       if (selectedPrompt?.output) {
         setTimeout(() => {
           setProcessedImage(selectedPrompt.output);
           setIsLoading(false);
-        }, 1000); 
+        }, 1000);
         return;
       }
     }
@@ -123,6 +118,8 @@ export default function ImageSelectionSection() {
     }
   };
 
+  const isSampleOutput = !useCustom && selected.length === 2;
+
   return (
     <section
       className="relative min-h-screen w-full px-4 py-8 bg-[#fff4e6] flex items-center justify-center overflow-hidden"
@@ -133,17 +130,17 @@ export default function ImageSelectionSection() {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="max-w-6xl ml-[400px] mx-auto bg-white/70 border border-orange-200 backdrop-blur-lg rounded-3xl shadow-2xl p-10 flex flex-col lg:flex-row items-start gap-10">
+      <div className="max-w-6xl w-full mx-auto bg-white/70 border border-orange-200 backdrop-blur-lg rounded-3xl shadow-2xl p-6 sm:p-10 flex flex-col lg:flex-row items-start gap-10">
         {/* Left Section */}
         <div className="w-full lg:w-1/2">
-          <h2 className="text-4xl font-extrabold text-orange-600 mb-2 text-center lg:text-left">
-            Make Your Group Magic
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-orange-600 mb-2 text-center lg:text-left">
+            Bringing You Together
           </h2>
-          <p className="text-gray-700 text-lg mb-6 text-center lg:text-left">
+          <p className="text-gray-700 text-base sm:text-lg mb-6 text-center lg:text-left">
             Choose <strong>any two solo photos</strong> below or upload your own!
           </p>
 
-          {/* Toggle Button */}
+          {/* Toggle */}
           {useCustom ? (
             <button
               onClick={() => {
@@ -200,6 +197,8 @@ export default function ImageSelectionSection() {
               {[0, 1].map((i) => (
                 <div
                   key={i}
+                  onMouseEnter={() => setHoveredIndex(i)}
+                  onMouseLeave={() => setHoveredIndex(null)}
                   className="flex items-center gap-4 bg-white/60 backdrop-blur-md border-2 border-dotted border-orange-300 rounded-xl px-4 py-3"
                 >
                   <button
@@ -216,6 +215,30 @@ export default function ImageSelectionSection() {
                       className="w-16 h-16 rounded-lg object-cover border border-orange-300"
                     />
                   )}
+
+                  {hoveredIndex === i && (
+                    <div className="absolute left-full ml-3 top-0 z-50 w-[280px] bg-white border border-orange-300 p-4 rounded-xl shadow-xl">
+                      <h3 className="text-lg font-semibold text-orange-600 mb-2">
+                        Upload Guidelines
+                      </h3>
+                      <ul className="text-sm text-gray-700 list-disc list-inside space-y-1">
+                        <li>Face the camera directly, with a neutral or slight smile</li>
+                        <li>Keep the camera at eye level</li>
+                        <li>Ensure good lighting and clear visibility</li>
+                        <li>Avoid filters, sunglasses, or obstructions</li>
+                        <li>Upload a solo photo (no group shots)</li>
+                        <li>Acceptable formats: JPG or PNG</li>
+                      </ul>
+                      {customImages[i] && (
+                        <img
+                          src="/group-photo/example.jpg"
+                          alt="example"
+                          className="mt-2 w-full h-36 rounded-lg object-cover border border-orange-300"
+                        />
+                      )}
+                    </div>
+                  )}
+
                   <input
                     type="file"
                     accept="image/*"
@@ -228,7 +251,7 @@ export default function ImageSelectionSection() {
             </div>
           )}
 
-          {/* Prompt Dropdown */}
+          {/* Prompt Select */}
           <div className="mb-2 mt-6">
             <label
               htmlFor="prompt-select"
@@ -250,6 +273,7 @@ export default function ImageSelectionSection() {
             </select>
           </div>
 
+          {/* Generate Button */}
           <div className="mt-8">
             <button
               disabled={
@@ -258,9 +282,11 @@ export default function ImageSelectionSection() {
               }
               onClick={handleProcess}
               className={`px-8 py-3 rounded-full font-semibold transition-all shadow-md ${
-                (useCustom
+                useCustom
                   ? customImages[0] && customImages[1]
-                  : selected.length === 2)
+                    ? "bg-orange-500 text-white hover:bg-orange-600"
+                    : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                  : selected.length === 2
                   ? "bg-orange-500 text-white hover:bg-orange-600"
                   : "bg-gray-300 text-gray-600 cursor-not-allowed"
               }`}
@@ -274,18 +300,19 @@ export default function ImageSelectionSection() {
               )}
             </button>
             {isLoading && countdown > 0 && (
-  <p className="mt-2 mx-3 text-sm text-black text-left">
-    Average Waiting Time : {Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, "0")}
-  </p>
-)}
-
+              <p className="mt-2 text-sm text-black text-left">
+                Average Waiting Time : {Math.floor(countdown / 60)}:{
+                  (countdown % 60).toString().padStart(2, "0")
+                }
+              </p>
+            )}
           </div>
         </div>
 
         {/* Right Section */}
         <div className="w-full lg:w-1/2 flex flex-col items-center">
-          <h3 className="text-3xl font-bold text-orange-600 mb-4">Preview</h3>
-          <div className="w-full max-w-md aspect-video bg-white/60 border-2 border-dotted border-orange-300 rounded-2xl shadow-inner flex items-center justify-center overflow-hidden">
+          <h3 className="text-2xl sm:text-3xl font-bold text-orange-600 mb-4">Preview</h3>
+          <div className="w-full max-w-xs aspect-[3/4] bg-white/60 border-2 border-dotted border-orange-300 rounded-2xl shadow-inner flex items-center justify-center overflow-hidden">
             {processedImage ? (
               <img
                 src={processedImage}
@@ -298,6 +325,19 @@ export default function ImageSelectionSection() {
               </p>
             )}
           </div>
+
+          {/* Download Button */}
+          {processedImage && (
+            <a
+              href={processedImage}
+              download={
+                isSampleOutput ? "sample-output.jpg" : "generated-group-photo.jpg"
+              }
+              className="mt-4 inline-block bg-orange-500 text-white font-semibold px-5 py-2 rounded-full hover:bg-orange-600 transition"
+            >
+              Download Image
+            </a>
+          )}
         </div>
       </div>
     </section>
