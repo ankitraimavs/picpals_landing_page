@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <div className="pt-5 relative font-sans bg-white text-gray-800 overflow-hidden">
       <div className="relative z-10 px-6 sm:px-12 lg:px-24  pb-16 space-y-32 max-w-screen-xl mx-auto">
-        <Navbar setShowModal={setShowModal} onNotifyClick={handleScrollToEarlyAccess} />
+        <Navbar setShowModal={setShowModal} onNotifyClick={handleScrollToEarlyAccess} scrollToImageSection={handleScrollToImages} />
 
         <section className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 md:gap-20">
           {/* Left Text */}

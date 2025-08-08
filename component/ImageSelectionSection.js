@@ -38,7 +38,7 @@ const promptOptions = [
     output: "/group-photo/sample-rakhi-1.jpg",
   },
   {
-    label: "Raksha Bandhan - Modern",
+    label: "Casual in a Cafe",
     prompt: "A stylish Raksha Bandhan celebration in a contemporary urban setting with modern decor...",
     output: "/group-photo/sample-rakhi-modern.jpg",
   },
@@ -346,7 +346,7 @@ export default function ImageSelectionSection() {
               {promptOptions.map((option, idx) => {
                 const isEnabled =
                   option.label === "Raksha Bandhan - Traditional" ||
-                  option.label === "Raksha Bandhan - Modern";
+                  option.label === "Casual in a Cafe";
 
                 return (
                   <option

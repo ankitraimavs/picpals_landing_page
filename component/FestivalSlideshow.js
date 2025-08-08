@@ -46,16 +46,13 @@ export default function FestivalSlideshow() {
               <div className="w-full h-full rounded-2xl overflow-hidden">
                 <img
                   src={item.src}
-                  alt={item.caption}
+          
                   className="w-full h-full object-cover rounded-2xl transform transition-transform duration-500 ease-in-out will-change-transform group-hover:scale-105"
                 />
               </div>
             </div>
 
-            {/* Caption */}
-            <p className="text-center mt-4 text-lg font-semibold text-white">
-              {item.caption}
-            </p>
+      
           </div>
         ))}
       </div>

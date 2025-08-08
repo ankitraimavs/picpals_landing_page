@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const MergedNavbarBanner = ({ showModal, setShowModal, onNotifyClick }) => {
+const MergedNavbarBanner = ({ showModal, setShowModal, onNotifyClick, scrollToImageSection }) => {
     const router = useRouter();
     const [activeIndex, setActiveIndex] = useState(null);
     const modalRef = useRef(null);
@@ -182,10 +182,10 @@ const MergedNavbarBanner = ({ showModal, setShowModal, onNotifyClick }) => {
 
                                         {/* Get Notified Button */}
                                         <button
-                                            onClick={onNotifyClick}
+                                            onClick={scrollToImageSection}
                                             className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg hover:from-red-600 hover:to-orange-600 transition-all duration-200 transform hover:scale-105"
                                         >
-                                            Get Notified
+                                            Try Now
                                         </button>
                                     </div>
 
