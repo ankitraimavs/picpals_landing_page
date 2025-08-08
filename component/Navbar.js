@@ -74,7 +74,7 @@ const MergedNavbarBanner = ({ showModal, setShowModal, onNotifyClick, scrollToIm
                                 <div className="flex items-center">
                                     <span
                                         onClick={() => router.push("/")}
-                                        className="text-lg sm:text-2xl lg:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 bg-clip-text text-transparent drop-shadow-md cursor-pointer hover:opacity-90 transition-all duration-200"
+                                        className="text-lg sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-red-600 drop-shadow-md cursor-pointer hover:opacity-90 transition-all duration-200"
                                     >
                                         Lensational
                                     </span>

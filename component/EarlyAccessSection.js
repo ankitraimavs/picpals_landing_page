@@ -14,7 +14,7 @@ export default function EarlyAccessSection() {
       const formData = new FormData();
       formData.append("email", email);
 
-      const res = await fetch("https://picpals.api.yonderwonder.ai/api/save-email", {
+      const res = await fetch("https://lensational.api.yonderwonder.ai/api/save-email", {
         method: "POST",
         body: formData,
       });
