@@ -1,20 +1,20 @@
 "use client";
 
 import { useRef, useState } from "react";
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function EarlyAccessSection() {
   const [submitted, setSubmitted] = useState(false);
-  const emailRef = useRef(null); 
+  const emailRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = emailRef.current.value; 
+    const email = emailRef.current.value;
 
     try {
       const formData = new FormData();
       formData.append("email", email);
-
-      const res = await fetch("https://lensational.api.yonderwonder.ai/api/save-email", {
+      const res = await fetch(`${baseUrl}/api/save-email`, {
         method: "POST",
         body: formData,
       });
@@ -22,7 +22,7 @@ export default function EarlyAccessSection() {
       if (!res.ok) throw new Error("Network response was not ok");
 
       setSubmitted(true);
-      emailRef.current.value = ""; 
+      emailRef.current.value = "";
     } catch (err) {
       console.error("Failed to submit email:", err);
       alert("Something went wrong. Please try again later.");
@@ -53,7 +53,7 @@ export default function EarlyAccessSection() {
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6"
         >
           <input
-            ref={emailRef} 
+            ref={emailRef}
             type="email"
             required
             placeholder="Enter your email"
