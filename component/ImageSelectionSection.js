@@ -2,6 +2,8 @@
 
 import { useState, useRef } from "react";
 import { CheckCircle, UploadCloud, Loader2, Download } from "lucide-react";
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const sampleImages = [
   "/group-photo/sample-1.jpg",
   "/group-photo/sample-2.jpg",
@@ -14,7 +16,7 @@ const promptOptions = [
     output: "/group-photo/sample-rakhi-1.jpg",
   },
   {
-    label: "Raksha Bandhan - Modern",
+    label: "Casual in a Cafe",
     prompt: "modern",
     output: "/group-photo/sample-rakhi-modern.jpg",
   },
@@ -112,6 +114,7 @@ export default function ImageSelectionSection() {
   };
 
   const handleProcess = async () => {
+   
     setIsLoading(true);
     setProcessedImages([]);
     setCountdown(120);
@@ -158,11 +161,10 @@ export default function ImageSelectionSection() {
     formData.append("prompt", prompt);
 
     try {
-      // First call to get the image paths
-      const response = await fetch("https://lensational.api.yonderwonder.ai/api/process", {
-        method: "POST",
-        body: formData,
-      });
+     const response = await fetch(`${baseUrl}/api/process`, {
+      method: "POST",
+      body: formData,
+    });
 
       if (!response.ok) throw new Error("Failed to generate image");
 
@@ -171,7 +173,7 @@ export default function ImageSelectionSection() {
 
       // Fetch each image individually
       const imageFetchPromises = imagePaths.map(async (path) => {
-        const imageResponse = await fetch(`https://lensational.api.yonderwonder.ai/api${path}`);
+       const imageResponse = await fetch(`${baseUrl}/api${path}`);
         if (!imageResponse.ok) throw new Error("Failed to fetch image");
         return URL.createObjectURL(await imageResponse.blob());
       });
@@ -287,7 +289,7 @@ export default function ImageSelectionSection() {
                   {hoveredIndex === i && processedImages.length === 0 && (
   <div className="absolute z-50 left-full top-1/2 -translate-y-1/2 ml-4 w-[280px] bg-white border border-orange-300 p-4 rounded-xl shadow-xl pointer-events-none">
     <h3 className="text-lg font-semibold text-orange-600 mb-2">
-      For Best Result
+      For Best Results
     </h3>
     <ul className="text-sm text-gray-700 list-disc list-inside space-y-1">
       <li>Face the camera directly, with a neutral or slight smile</li>
@@ -337,7 +339,7 @@ export default function ImageSelectionSection() {
               {promptOptions.map((option, idx) => {
                 const isEnabled =
                   option.label === "Raksha Bandhan - Traditional" ||
-                  option.label === "Raksha Bandhan - Modern";
+                  option.label === "Casual in a Cafe";
 
                 return (
                   <option

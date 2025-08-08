@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import EarlyAccessSection from "@/component/EarlyAccessSection";
 import FeaturesSection from "@/component/FeaturesSection";
 import ImageSelectionSection from "@/component/ImageSelectionSection";
@@ -8,8 +8,8 @@ import Navbar from "@/component/Navbar";
 import FestivalSlideshow from "@/component/FestivalSlideshow";
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(true);
 
   const imageSectionRef = useRef(null);
   const earlyAccessRef = useRef(null);
@@ -22,23 +22,14 @@ export default function Home() {
     earlyAccessRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 5000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="w-screen h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500 border-solid"></div>
-      </div>
-    );
-  }
-
   return (
     <div className="pt-5 relative font-sans bg-white text-gray-800 overflow-hidden">
-      <div className="relative z-10 px-6 sm:px-12 lg:px-24  pb-16 space-y-32 max-w-screen-xl mx-auto">
-        <Navbar setShowModal={setShowModal} onNotifyClick={handleScrollToEarlyAccess} scrollToImageSection={handleScrollToImages} />
+      <div className="relative z-10 px-6 sm:px-12 lg:px-24 pb-16 space-y-32 max-w-screen-xl mx-auto">
+        <Navbar
+          setShowModal={setShowModal}
+          onNotifyClick={handleScrollToEarlyAccess}
+          scrollToImageSection={handleScrollToImages}
+        />
 
         <section className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 md:gap-20">
           {/* Left Text */}
@@ -71,7 +62,12 @@ export default function Home() {
           </div>
 
           {/* Right Video */}
-          <div className="flex-1 flex justify-center">
+          <div className="flex-1 flex justify-center relative">
+            {videoLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-orange-500 border-solid"></div>
+              </div>
+            )}
             <video
               src="/smartphone2.mp4"
               width={300}
@@ -81,6 +77,7 @@ export default function Home() {
               loop
               muted
               playsInline
+              onCanPlayThrough={() => setVideoLoading(false)}
             />
           </div>
         </section>
