@@ -5,16 +5,21 @@ import EarlyAccessSection from "@/component/EarlyAccessSection";
 import FeaturesSection from "@/component/FeaturesSection";
 import ImageSelectionSection from "@/component/ImageSelectionSection";
 import Navbar from "@/component/Navbar";
-import FestivalSlideshow from "@/component/FestivalSlideshow"; 
+import FestivalSlideshow from "@/component/FestivalSlideshow";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
   const imageSectionRef = useRef(null);
+  const earlyAccessRef = useRef(null);
 
   const handleScrollToImages = () => {
     imageSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleScrollToEarlyAccess = () => {
+    earlyAccessRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -31,12 +36,9 @@ export default function Home() {
   }
 
   return (
-    <>
     <div className="pt-10 relative font-sans bg-white text-gray-800 overflow-hidden">
-
       <div className="relative z-10 px-6 sm:px-12 lg:px-24 pt-24 pb-16 space-y-32 max-w-screen-xl mx-auto">
-        
-        <Navbar setShowModal={setShowModal} />
+        <Navbar setShowModal={setShowModal} onNotifyClick={handleScrollToEarlyAccess} />
 
         <section className="flex flex-col-reverse md:flex-row items-center justify-between gap-12 md:gap-20">
           {/* Left Text */}
@@ -53,7 +55,7 @@ export default function Home() {
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
               <button
-                onClick={() => setShowModal(true)}
+                onClick={handleScrollToEarlyAccess}
                 className="bg-white text-[#FF8A33] px-5 py-2.5 rounded-full text-sm font-semibold shadow hover:shadow-lg hover:bg-orange-100 transition-all duration-200"
               >
                 Get Notified
@@ -68,7 +70,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Video (unchanged) */}
+          {/* Right Video */}
           <div className="flex-1 flex justify-center">
             <video
               src="/smartphone2.mp4"
@@ -87,15 +89,16 @@ export default function Home() {
       <FestivalSlideshow />
 
       {/* Image Selection Section */}
-      <div
-        ref={imageSectionRef}
-        className="relative z-20 mt-5 w-full bg-white scroll-mt-28"
-      >
+      <div ref={imageSectionRef} className="relative z-20 mt-5 w-full bg-white scroll-mt-28">
         <ImageSelectionSection />
       </div>
 
       {/* Early Access Section */}
-      <EarlyAccessSection />
+      <div ref={earlyAccessRef} className="relative z-20 mt-10 w-full bg-white scroll-mt-28">
+        <div className="max-h-[80vh] overflow-y-auto">
+          <EarlyAccessSection />
+        </div>
+      </div>
 
       {/* Modal */}
       {showModal && (
@@ -114,6 +117,5 @@ export default function Home() {
         </div>
       )}
     </div>
-    </>
   );
 }

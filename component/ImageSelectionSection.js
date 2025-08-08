@@ -98,7 +98,7 @@ const promptOptions = [
     output: "/group-photo/sample-celebrity-interview.jpg",
   },
   {
-    label: "Custom Prompt",
+    label: "Custom Prompt..",
     prompt: "Add your own custom group photo idea...",
     output: "/group-photo/sample-custom.jpg",
   },
@@ -251,11 +251,10 @@ export default function ImageSelectionSection() {
                   <div
                     key={index}
                     onClick={() => toggleSelect(imgUrl)}
-                    className={`relative cursor-pointer rounded-xl border-2 w-20 h-20 sm:w-24 sm:h-24 overflow-hidden shadow-md transition-all ${
-                      isSelected
+                    className={`relative cursor-pointer rounded-xl border-2 w-20 h-20 sm:w-24 sm:h-24 overflow-hidden shadow-md transition-all ${isSelected
                         ? "border-fuchsia-500 ring-2 ring-orange-400 scale-105"
                         : "border-orange-300 hover:scale-105"
-                    }`}
+                      }`}
                   >
                     <img
                       src={imgUrl}
@@ -344,11 +343,23 @@ export default function ImageSelectionSection() {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
             >
-              {promptOptions.map((option, idx) => (
-                <option key={idx} value={option.prompt}>
-                  {option.label}
-                </option>
-              ))}
+              {promptOptions.map((option, idx) => {
+                const isEnabled =
+                  option.label === "Raksha Bandhan - Traditional" ||
+                  option.label === "Raksha Bandhan - Modern";
+
+                return (
+                  <option
+                    key={idx}
+                    value={option.prompt}
+                    disabled={!isEnabled}
+                    className={!isEnabled ? "text-gray-400" : ""}
+                  >
+                    {option.label}
+                  </option>
+                );
+              })}
+
             </select>
           </div>
 
@@ -360,15 +371,14 @@ export default function ImageSelectionSection() {
                 (useCustom ? !(customImages[0] && customImages[1]) : selected.length !== 2)
               }
               onClick={handleProcess}
-              className={`px-8 py-3 rounded-full font-semibold transition-all shadow-md ${
-                useCustom
+              className={`px-8 py-3 rounded-full font-semibold transition-all shadow-md ${useCustom
                   ? customImages[0] && customImages[1]
                     ? "bg-orange-500 text-white hover:bg-orange-600"
                     : "bg-gray-300 text-gray-600 cursor-not-allowed"
                   : selected.length === 2
-                  ? "bg-orange-500 text-white hover:bg-orange-600"
-                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
-              }`}
+                    ? "bg-orange-500 text-white hover:bg-orange-600"
+                    : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                }`}
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
