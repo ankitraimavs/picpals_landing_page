@@ -8,11 +8,39 @@ const sampleImages = [
   "/group-photo/sample-2.jpg",
 ];
 
+// const promptOptions = [
+//   {
+//     label: "Raksha Bandhan - Traditional",
+//     prompt: "A warm Raksha Bandhan moment captured in a traditionally decorated Indian living room...",
+//     output: "/group-photo/sample-rakhi-1.jpg",
+//   },
+//    {
+//     label: "Raksha Bandhan - Modern",
+//     prompt: "A stylish Raksha Bandhan celebration in a contemporary urban setting with modern decor...",
+//     output: "/group-photo/sample-rakhi-modern.jpg",
+//   },
+//   {
+//     label: "Graduation Celebration",
+//     prompt: "A joyful graduation scene with two friends in black graduation robes...",
+//     output: "/group-photo/sample-rakhi-2.jpg",
+//   },
+//   {
+//     label: "Birthday Bash - Colorful Fun",
+//     prompt: "A vibrant birthday celebration in a garden setting...",
+//     output: "/group-photo/sample-rakhi-3.jpg",
+//   },
+// ];
+
 const promptOptions = [
   {
     label: "Raksha Bandhan - Traditional",
     prompt: "A warm Raksha Bandhan moment captured in a traditionally decorated Indian living room...",
     output: "/group-photo/sample-rakhi-1.jpg",
+  },
+  {
+    label: "Raksha Bandhan - Modern",
+    prompt: "A stylish Raksha Bandhan celebration in a contemporary urban setting with modern decor...",
+    output: "/group-photo/sample-rakhi-modern.jpg",
   },
   {
     label: "Graduation Celebration",
@@ -24,7 +52,58 @@ const promptOptions = [
     prompt: "A vibrant birthday celebration in a garden setting...",
     output: "/group-photo/sample-rakhi-3.jpg",
   },
+  {
+    label: "Two Friends at the Beach",
+    prompt: "Two friends enjoying a sunny day at the beach with waves crashing behind them...",
+    output: "/group-photo/sample-beach-friends.jpg",
+  },
+  {
+    label: "A Date at a Cafe",
+    prompt: "A romantic moment between a couple having coffee at a cozy outdoor cafe...",
+    output: "/group-photo/sample-cafe-date.jpg",
+  },
+  {
+    label: "Picnic in the Park",
+    prompt: "A cheerful group picnic in a lush green park with blankets, food baskets, and laughter...",
+    output: "/group-photo/sample-picnic.jpg",
+  },
+  {
+    label: "Supermodels Photoshoot",
+    prompt: "Two glamorous supermodels striking poses in a high-fashion studio photoshoot...",
+    output: "/group-photo/sample-photoshoot.jpg",
+  },
+  {
+    label: "Magazine Cover",
+    prompt: "A polished group portrait styled like a high-end fashion magazine cover...",
+    output: "/group-photo/sample-magazine-cover.jpg",
+  },
+  {
+    label: "Taj Mahal Group Selfie",
+    prompt: "A lively group selfie taken in front of the Taj Mahal, filled with joy and wonder...",
+    output: "/group-photo/sample-tajmahal-selfie.jpg",
+  },
+  {
+    label: "Exchanging Wedding Vows",
+    prompt: "A romantic wedding ceremony scene where a couple is exchanging vows...",
+    output: "/group-photo/sample-wedding-vows.jpg",
+  },
+  {
+    label: "Downtown New York",
+    prompt: "A dynamic group shot in bustling downtown New York with iconic skyscrapers in the background...",
+    output: "/group-photo/sample-nyc.jpg",
+  },
+  {
+    label: "Celebrity Interview",
+    prompt: "An exciting interview scene with a fan sitting across their favorite celebrity in a studio setup...",
+    output: "/group-photo/sample-celebrity-interview.jpg",
+  },
+  {
+    label: "Custom Prompt..",
+    prompt: "Add your own custom group photo idea...",
+    output: "/group-photo/sample-custom.jpg",
+  },
 ];
+
 
 export default function ImageSelectionSection() {
   const [selected, setSelected] = useState([]);
@@ -172,11 +251,10 @@ export default function ImageSelectionSection() {
                   <div
                     key={index}
                     onClick={() => toggleSelect(imgUrl)}
-                    className={`relative cursor-pointer rounded-xl border-2 w-20 h-20 sm:w-24 sm:h-24 overflow-hidden shadow-md transition-all ${
-                      isSelected
+                    className={`relative cursor-pointer rounded-xl border-2 w-20 h-20 sm:w-24 sm:h-24 overflow-hidden shadow-md transition-all ${isSelected
                         ? "border-fuchsia-500 ring-2 ring-orange-400 scale-105"
                         : "border-orange-300 hover:scale-105"
-                    }`}
+                      }`}
                   >
                     <img
                       src={imgUrl}
@@ -265,11 +343,23 @@ export default function ImageSelectionSection() {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
             >
-              {promptOptions.map((option, idx) => (
-                <option key={idx} value={option.prompt}>
-                  {option.label}
-                </option>
-              ))}
+              {promptOptions.map((option, idx) => {
+                const isEnabled =
+                  option.label === "Raksha Bandhan - Traditional" ||
+                  option.label === "Raksha Bandhan - Modern";
+
+                return (
+                  <option
+                    key={idx}
+                    value={option.prompt}
+                    disabled={!isEnabled}
+                    className={!isEnabled ? "text-gray-400" : ""}
+                  >
+                    {option.label}
+                  </option>
+                );
+              })}
+
             </select>
           </div>
 
@@ -281,15 +371,14 @@ export default function ImageSelectionSection() {
                 (useCustom ? !(customImages[0] && customImages[1]) : selected.length !== 2)
               }
               onClick={handleProcess}
-              className={`px-8 py-3 rounded-full font-semibold transition-all shadow-md ${
-                useCustom
+              className={`px-8 py-3 rounded-full font-semibold transition-all shadow-md ${useCustom
                   ? customImages[0] && customImages[1]
                     ? "bg-orange-500 text-white hover:bg-orange-600"
                     : "bg-gray-300 text-gray-600 cursor-not-allowed"
                   : selected.length === 2
-                  ? "bg-orange-500 text-white hover:bg-orange-600"
-                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
-              }`}
+                    ? "bg-orange-500 text-white hover:bg-orange-600"
+                    : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                }`}
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
