@@ -114,7 +114,7 @@ export default function ImageSelectionSection() {
   };
 
   const handleProcess = async () => {
-   
+
     setIsLoading(true);
     setProcessedImages([]);
     setCountdown(120);
@@ -161,10 +161,10 @@ export default function ImageSelectionSection() {
     formData.append("prompt", prompt);
 
     try {
-     const response = await fetch(`${baseUrl}/api/process`, {
-      method: "POST",
-      body: formData,
-    });
+      const response = await fetch(`${baseUrl}/api/process`, {
+        method: "POST",
+        body: formData,
+      });
 
       if (!response.ok) throw new Error("Failed to generate image");
 
@@ -173,7 +173,7 @@ export default function ImageSelectionSection() {
 
       // Fetch each image individually
       const imageFetchPromises = imagePaths.map(async (path) => {
-       const imageResponse = await fetch(`${baseUrl}/api${path}`);
+        const imageResponse = await fetch(`${baseUrl}/api${path}`);
         if (!imageResponse.ok) throw new Error("Failed to fetch image");
         return URL.createObjectURL(await imageResponse.blob());
       });
@@ -263,6 +263,10 @@ export default function ImageSelectionSection() {
             </div>
           ) : (
             <div className="mt-6 space-y-4">
+              <p className="text-sm text-orange-700 font-medium mb-2 text-center sm:text-left">
+                Please upload the <strong>Sister’s</strong> image first and the <strong>Brother’s</strong> image second.
+              </p>
+
               {[0, 1].map((i) => (
                 <div
                   key={i}
@@ -276,7 +280,8 @@ export default function ImageSelectionSection() {
                     className="flex items-center gap-2 text-orange-600 font-medium hover:text-orange-800"
                   >
                     <UploadCloud size={20} />
-                    Upload Image {i + 1}
+                    {`Upload ${i === 0 ? "Sister's" : "Brother's"} Image`}
+
                   </button>
                   {customImages[i] && (
                     <img
@@ -287,27 +292,27 @@ export default function ImageSelectionSection() {
                   )}
 
                   {hoveredIndex === i && processedImages.length === 0 && (
-  <div className="absolute z-50 left-full top-1/2 -translate-y-1/2 ml-4 w-[280px] bg-white border border-orange-300 p-4 rounded-xl shadow-xl pointer-events-none">
-    <h3 className="text-lg font-semibold text-orange-600 mb-2">
-      For Best Results
-    </h3>
-    <ul className="text-sm text-gray-700 list-disc list-inside space-y-1">
-      <li>Face the camera directly, with a neutral or slight smile</li>
-      <li>Keep the camera at eye level</li>
-      <li>Ensure good lighting and clear visibility</li>
-      <li>Avoid filters, sunglasses, or obstructions</li>
-      <li>Upload a solo photo (no group shots)</li>
-      <li>Acceptable formats: JPG or PNG</li>
-    </ul>
-    {customImages[i] && (
-      <img
-        src="/group-photo/example.jpg"
-        alt="example"
-        className="mt-2 w-full h-36 rounded-lg object-cover border border-orange-300"
-      />
-    )}
-  </div>
-)}
+                    <div className="absolute z-50 left-full top-1/2 -translate-y-1/2 ml-4 w-[280px] bg-white border border-orange-300 p-4 rounded-xl shadow-xl pointer-events-none">
+                      <h3 className="text-lg font-semibold text-orange-600 mb-2">
+                        For Best Results
+                      </h3>
+                      <ul className="text-sm text-gray-700 list-disc list-inside space-y-1">
+                        <li>Face the camera directly, with a neutral or slight smile</li>
+                        <li>Keep the camera at eye level</li>
+                        <li>Ensure good lighting and clear visibility</li>
+                        <li>Avoid filters, sunglasses, or obstructions</li>
+                        <li>Upload a solo photo (no group shots)</li>
+                        <li>Acceptable formats: JPG or PNG</li>
+                      </ul>
+                      {customImages[i] && (
+                        <img
+                          src="/group-photo/example.jpg"
+                          alt="example"
+                          className="mt-2 w-full h-36 rounded-lg object-cover border border-orange-300"
+                        />
+                      )}
+                    </div>
+                  )}
 
 
                   <input
