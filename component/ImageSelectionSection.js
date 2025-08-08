@@ -297,7 +297,7 @@ export default function ImageSelectionSection() {
                   {hoveredIndex === i && (
                     <div className="absolute left-full ml-3 top-0 z-50 w-[280px] bg-white border border-orange-300 p-4 rounded-xl shadow-xl">
                       <h3 className="text-lg font-semibold text-orange-600 mb-2">
-                        For Best Result
+                        For Best Results
                       </h3>
                       <ul className="text-sm text-gray-700 list-disc list-inside space-y-1">
                         <li>Face the camera directly, with a neutral or slight smile</li>
