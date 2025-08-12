@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.yonderwonder.picpals",
+      "sha256_cert_fingerprints": [
+        "86:6D:96:57:30:2C:65:FB:06:39:3F:FE:33:08:56:6A:30:2B:49:E5:71:69:2D:4F:32:C4:B9:D0:3C:E3:24:56"
+      ]
+    }
+  }
+]
