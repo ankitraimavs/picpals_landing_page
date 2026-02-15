@@ -1,0 +1,16 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "8BY56B23WB.com.yonderwonder.weclick",
+        "paths": [ "*" ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "8BY56B23WB.com.yonderwonder.weclick"
+    ]
+  }
+}

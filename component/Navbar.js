@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const MergedNavbarBanner = ({ showModal, setShowModal, onNotifyClick }) => {
+const MergedNavbarBanner = ({ showModal, setShowModal, onNotifyClick, scrollToImageSection }) => {
     const router = useRouter();
     const [activeIndex, setActiveIndex] = useState(null);
     const modalRef = useRef(null);
@@ -74,9 +74,9 @@ const MergedNavbarBanner = ({ showModal, setShowModal, onNotifyClick }) => {
                                 <div className="flex items-center">
                                     <span
                                         onClick={() => router.push("/")}
-                                        className="text-lg sm:text-2xl lg:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 bg-clip-text text-transparent drop-shadow-md cursor-pointer hover:opacity-90 transition-all duration-200"
+                                        className="text-lg sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-red-600 drop-shadow-md cursor-pointer hover:opacity-90 transition-all duration-200"
                                     >
-                                        Lensational
+                                        WeClick
                                     </span>
                                 </div>
 
@@ -182,10 +182,10 @@ const MergedNavbarBanner = ({ showModal, setShowModal, onNotifyClick }) => {
 
                                         {/* Get Notified Button */}
                                         <button
-                                            onClick={onNotifyClick}
+                                            onClick={scrollToImageSection}
                                             className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg hover:from-red-600 hover:to-orange-600 transition-all duration-200 transform hover:scale-105"
                                         >
-                                            Get Notified
+                                            Try Now
                                         </button>
                                     </div>
 

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WeClick – Data Deletion Policy</title>
+  <meta name="color-scheme" content="light" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --muted-bg: #f7f8fa;
+      --text: #374151;
+      --heading: #000000;
+      --border: #e5e7eb;
+      --accent: #f97316;
+      --accent-2: #ea580c;
+      --link: #f97316;
+      --card: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height: 1.65
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 40px 20px
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 10
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px
+    }
+
+    .logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--accent)
+    }
+
+    .brand h1 {
+      font-size: 1.05rem;
+      margin: 0;
+      color: var(--heading);
+      letter-spacing: .2px
+    }
+
+    .page-title {
+      margin: 26px 0 10px;
+      color: var(--heading)
+    }
+
+    .meta {
+      color: #6b7280;
+      font-size: .9rem
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 20px;
+      margin: 18px 0
+    }
+
+    h2 {
+      color: var(--heading);
+      margin: 18px 0 8px;
+      font-size: 1.35rem
+    }
+
+    p {
+      margin: 10px 0
+    }
+
+    ol {
+      padding-left: 20px
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none
+    }
+
+    a:hover {
+      color: var(--accent-2);
+      text-decoration: underline
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: .95rem
+    }
+
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      margin-top: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: .95rem
+    }
+
+    button:hover {
+      background: var(--accent-2)
+    }
+
+    footer {
+      margin: 36px 0 24px;
+      color: #6b7280;
+      font-size: .9rem;
+      text-align: center
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="brand container">
+      <div class="logo" aria-hidden="true"></div>
+      <h1>WeClick · Data Deletion Request</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2 class="page-title">Data Deletion Request</h2>
+    <!-- <p class="meta">Effective Date: <strong><script>document.write(new Date().toLocaleDateString());</script></strong></p> -->
+
+    <section class="card">
+      <h2>Introduction</h2>
+      <p>
+        At <strong>WeClick</strong>, we value your privacy and give you full control
+        over your personal data. Since WeClick uses <strong>Google Sign-In</strong> only,
+        we do not store separate passwords. This page explains how you can request the
+        deletion of your account and associated data.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>How to Request Data Deletion</h2>
+      <ol>
+        <li>Send a request using the form below, or email us directly at
+          <a href="mailto:feedback@yonderwonder.ai">feedback@yonderwonder.ai</a>.
+        </li>
+        <li>Provide the Google account email you used to sign in to WeClick.</li>
+        <li>Our team will verify your request.</li>
+        <li>We will delete your account and associated data within
+          <strong>14 working days</strong> of verification.
+        </li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Submit a Request</h2>
+      <form id="deletionForm" action="http://48.216.241.134:5000/deletion-request/" method="POST">
+        <label for="email">Google Account Email *</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="additional_details">Additional Details (optional)</label>
+        <textarea id="additional_details" name="additional_details"></textarea>
+
+        <button type="submit">Submit Request</button>
+      </form>
+
+      <style>
+        /* Toast container */
+        #toast {
+          visibility: hidden;
+          min-width: 250px;
+          max-width: 90%;
+          margin-left: -125px;
+          background-color: #4caf50;
+          color: white;
+          text-align: center;
+          border-radius: 8px;
+          padding: 16px;
+          position: fixed;
+          z-index: 1000;
+          left: 50%;
+          bottom: 30px;
+          font-size: 1rem;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+          transition: visibility 0s, opacity 0.5s linear;
+          opacity: 0;
+        }
+
+        /* Show toast */
+        #toast.show {
+          visibility: visible;
+          opacity: 1;
+        }
+      </style>
+
+      <div id="toast"></div>
+
+      <script>
+        function showToast(message) {
+          const toast = document.getElementById('toast');
+          toast.textContent = message;
+          toast.className = 'show';
+          setTimeout(() => {
+            toast.className = toast.className.replace('show', '');
+          }, 4000); // Toast visible for 4 seconds
+        }
+
+        document.getElementById('deletionForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const email = document.getElementById('email').value;
+          const additional_details = document.getElementById('additional_details').value;
+
+          try {
+            const response = await fetch('https://WeClick.api.yonderwonder.ai/api/deletion-request', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, additional_details })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+              showToast("Your deletion request has been successfully submitted!");
+              // Optionally, reset the form
+              document.getElementById('deletionForm').reset();
+            } else {
+              showToast("Failed to submit request: " + (result.error || 'Unknown error'));
+            }
+
+          } catch (err) {
+            console.error(err);
+            showToast("There was an error submitting your request. Please try again.");
+          }
+        });
+      </script>
+
+    </section>
+
+    <section class="card">
+      <h2>Response Timeline</h2>
+      <p>
+        We respond to all verified data deletion requests within a maximum of
+        <strong>14 working days</strong>.
+      </p>
+    </section>
+
+    <footer>
+      ©
+      <script>document.write(new Date().getFullYear());</script> Yonder Wonder LLC · WeClick
+      <br />
+      <a href="https://WeClick.yonderwonder.ai/privacy_policy.html">Privacy Policy</a> | <a
+        href="https://WeClick.yonderwonder.ai/weclick-data-deletion.html">Data Deletion</a>
+    </footer>
+  </main>
+</body>
+
+</html>

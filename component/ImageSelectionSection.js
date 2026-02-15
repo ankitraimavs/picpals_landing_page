@@ -1,45 +1,23 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { CheckCircle, UploadCloud, Loader2 } from "lucide-react";
+import { CheckCircle, UploadCloud, Loader2, Download } from "lucide-react";
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const sampleImages = [
   "/group-photo/sample-1.jpg",
   "/group-photo/sample-2.jpg",
 ];
 
-// const promptOptions = [
-//   {
-//     label: "Raksha Bandhan - Traditional",
-//     prompt: "A warm Raksha Bandhan moment captured in a traditionally decorated Indian living room...",
-//     output: "/group-photo/sample-rakhi-1.jpg",
-//   },
-//    {
-//     label: "Raksha Bandhan - Modern",
-//     prompt: "A stylish Raksha Bandhan celebration in a contemporary urban setting with modern decor...",
-//     output: "/group-photo/sample-rakhi-modern.jpg",
-//   },
-//   {
-//     label: "Graduation Celebration",
-//     prompt: "A joyful graduation scene with two friends in black graduation robes...",
-//     output: "/group-photo/sample-rakhi-2.jpg",
-//   },
-//   {
-//     label: "Birthday Bash - Colorful Fun",
-//     prompt: "A vibrant birthday celebration in a garden setting...",
-//     output: "/group-photo/sample-rakhi-3.jpg",
-//   },
-// ];
-
 const promptOptions = [
   {
     label: "Raksha Bandhan - Traditional",
-    prompt: "A warm Raksha Bandhan moment captured in a traditionally decorated Indian living room...",
+    prompt: "traditional",
     output: "/group-photo/sample-rakhi-1.jpg",
   },
   {
-    label: "Raksha Bandhan - Modern",
-    prompt: "A stylish Raksha Bandhan celebration in a contemporary urban setting with modern decor...",
+    label: "Casual in a Cafe",
+    prompt: "modern",
     output: "/group-photo/sample-rakhi-modern.jpg",
   },
   {
@@ -104,16 +82,18 @@ const promptOptions = [
   },
 ];
 
-
 export default function ImageSelectionSection() {
   const [selected, setSelected] = useState([]);
-  const [processedImage, setProcessedImage] = useState(null);
+  const [processedImages, setProcessedImages] = useState([]);
   const [useCustom, setUseCustom] = useState(true);
   const [customImages, setCustomImages] = useState([null, null]);
   const [prompt, setPrompt] = useState(promptOptions[0].prompt);
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [fullscreenImage, setFullscreenImage] = useState(null);
+
+
 
   const fileInputs = [useRef(null), useRef(null)];
 
@@ -134,8 +114,9 @@ export default function ImageSelectionSection() {
   };
 
   const handleProcess = async () => {
+
     setIsLoading(true);
-    setProcessedImage(null);
+    setProcessedImages([]);
     setCountdown(120);
 
     const interval = setInterval(() => {
@@ -152,7 +133,7 @@ export default function ImageSelectionSection() {
       const selectedPrompt = promptOptions.find((opt) => opt.prompt === prompt);
       if (selectedPrompt?.output) {
         setTimeout(() => {
-          setProcessedImage(selectedPrompt.output);
+          setProcessedImages([selectedPrompt.output]);
           setIsLoading(false);
         }, 1000);
         return;
@@ -180,17 +161,27 @@ export default function ImageSelectionSection() {
     formData.append("prompt", prompt);
 
     try {
-      const response = await fetch("https://picpals.api.yonderwonder.ai/api/process", {
+      const response = await fetch(`${baseUrl}/api/process`, {
         method: "POST",
         body: formData,
       });
 
       if (!response.ok) throw new Error("Failed to generate image");
 
-      const blob = await response.blob();
-      const imageUrl = URL.createObjectURL(blob);
-      setProcessedImage(imageUrl);
+      const data = await response.json();
+      const imagePaths = data.images;
+
+      // Fetch each image individually
+      const imageFetchPromises = imagePaths.map(async (path) => {
+        const imageResponse = await fetch(`${baseUrl}/api${path}`);
+        if (!imageResponse.ok) throw new Error("Failed to fetch image");
+        return URL.createObjectURL(await imageResponse.blob());
+      });
+
+      const imageUrls = await Promise.all(imageFetchPromises);
+      setProcessedImages(imageUrls);
     } catch (err) {
+      console.error(err);
       alert("Failed to process image. Try again.");
     } finally {
       setIsLoading(false);
@@ -252,8 +243,8 @@ export default function ImageSelectionSection() {
                     key={index}
                     onClick={() => toggleSelect(imgUrl)}
                     className={`relative cursor-pointer rounded-xl border-2 w-20 h-20 sm:w-24 sm:h-24 overflow-hidden shadow-md transition-all ${isSelected
-                        ? "border-fuchsia-500 ring-2 ring-orange-400 scale-105"
-                        : "border-orange-300 hover:scale-105"
+                      ? "border-fuchsia-500 ring-2 ring-orange-400 scale-105"
+                      : "border-orange-300 hover:scale-105"
                       }`}
                   >
                     <img
@@ -272,19 +263,25 @@ export default function ImageSelectionSection() {
             </div>
           ) : (
             <div className="mt-6 space-y-4">
+              <p className="text-sm text-orange-700 font-medium mb-2 text-center sm:text-left">
+                Please upload the <strong>Sister’s</strong> image first and the <strong>Brother’s</strong> image second.
+              </p>
+
               {[0, 1].map((i) => (
                 <div
                   key={i}
                   onMouseEnter={() => setHoveredIndex(i)}
                   onMouseLeave={() => setHoveredIndex(null)}
-                  className="flex items-center gap-4 bg-white/60 backdrop-blur-md border-2 border-dotted border-orange-300 rounded-xl px-4 py-3"
+                  className="relative flex items-center gap-4 bg-white/60 backdrop-blur-md border-2 border-dotted border-orange-300 rounded-xl px-4 py-3"
                 >
+
                   <button
                     onClick={() => fileInputs[i]?.current?.click()}
                     className="flex items-center gap-2 text-orange-600 font-medium hover:text-orange-800"
                   >
                     <UploadCloud size={20} />
-                    Upload Image {i + 1}
+                    {`Upload ${i === 0 ? "Sister's" : "Brother's"} Image`}
+
                   </button>
                   {customImages[i] && (
                     <img
@@ -294,10 +291,10 @@ export default function ImageSelectionSection() {
                     />
                   )}
 
-                  {hoveredIndex === i && (
-                    <div className="absolute left-full ml-3 top-0 z-50 w-[280px] bg-white border border-orange-300 p-4 rounded-xl shadow-xl">
+                  {hoveredIndex === i && processedImages.length === 0 && (
+                    <div className="absolute z-50 left-full top-1/2 -translate-y-1/2 ml-4 w-[280px] bg-white border border-orange-300 p-4 rounded-xl shadow-xl pointer-events-none">
                       <h3 className="text-lg font-semibold text-orange-600 mb-2">
-                        For Best Result
+                        For Best Results
                       </h3>
                       <ul className="text-sm text-gray-700 list-disc list-inside space-y-1">
                         <li>Face the camera directly, with a neutral or slight smile</li>
@@ -316,6 +313,7 @@ export default function ImageSelectionSection() {
                       )}
                     </div>
                   )}
+
 
                   <input
                     type="file"
@@ -346,7 +344,7 @@ export default function ImageSelectionSection() {
               {promptOptions.map((option, idx) => {
                 const isEnabled =
                   option.label === "Raksha Bandhan - Traditional" ||
-                  option.label === "Raksha Bandhan - Modern";
+                  option.label === "Casual in a Cafe";
 
                 return (
                   <option
@@ -359,7 +357,6 @@ export default function ImageSelectionSection() {
                   </option>
                 );
               })}
-
             </select>
           </div>
 
@@ -372,12 +369,12 @@ export default function ImageSelectionSection() {
               }
               onClick={handleProcess}
               className={`px-8 py-3 rounded-full font-semibold transition-all shadow-md ${useCustom
-                  ? customImages[0] && customImages[1]
-                    ? "bg-orange-500 text-white hover:bg-orange-600"
-                    : "bg-gray-300 text-gray-600 cursor-not-allowed"
-                  : selected.length === 2
-                    ? "bg-orange-500 text-white hover:bg-orange-600"
-                    : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                ? customImages[0] && customImages[1]
+                  ? "bg-orange-500 text-white hover:bg-orange-600"
+                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                : selected.length === 2
+                  ? "bg-orange-500 text-white hover:bg-orange-600"
+                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
                 }`}
             >
               {isLoading ? (
@@ -401,34 +398,63 @@ export default function ImageSelectionSection() {
         {/* Right Section */}
         <div className="w-full lg:w-1/2 flex flex-col items-center">
           <h3 className="text-2xl sm:text-3xl font-bold text-orange-600 mb-4">Preview</h3>
-          <div className="w-full max-w-xs aspect-[3/4] bg-white/60 border-2 border-dotted border-orange-300 rounded-2xl shadow-inner flex items-center justify-center overflow-hidden">
-            {processedImage ? (
-              <img
-                src={processedImage}
-                alt="Processed Group"
-                className="w-full h-full object-cover"
-              />
+          <div className="w-full max-w-lg min-h-[400px] bg-white/60 border-2 border-dotted border-orange-300 rounded-2xl shadow-inner flex items-center justify-center overflow-hidden">
+
+            {processedImages.length > 0 ? (
+              <div className="grid grid-cols-2 grid-rows-2 w-full h-full gap-1 p-1">
+                {processedImages.map((imgUrl, index) => (
+                  <div
+                    key={index}
+                    className="relative overflow-hidden group transition-transform duration-300 hover:scale-105"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Generated ${index + 1}`}
+                      onClick={() => setFullscreenImage(imgUrl)}
+                      className="w-full h-full object-cover cursor-zoom-in transition-transform duration-300"
+                    />
+
+
+                    <a
+                      href={imgUrl}
+                      download={`generated-group-photo-${index + 1}.jpg`}
+                      className="absolute bottom-2 right-2 bg-white/80 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-md hover:bg-orange-100"
+                      title="Download image"
+                    >
+                      <Download className="w-4 h-4 text-orange-600" />
+                    </a>
+                  </div>
+                ))}
+              </div>
             ) : (
               <p className="text-gray-500 px-6 text-center">
-                Your output group photo will appear here!
+                Your output group photos will appear here!
               </p>
             )}
           </div>
 
-          {/* Download Button */}
-          {processedImage && (
-            <a
-              href={processedImage}
-              download={
-                isSampleOutput ? "sample-output.jpg" : "generated-group-photo.jpg"
-              }
-              className="mt-4 inline-block bg-orange-500 text-white font-semibold px-5 py-2 rounded-full hover:bg-orange-600 transition"
-            >
-              Download Image
-            </a>
-          )}
+
         </div>
+
+
+
       </div>
+      {fullscreenImage && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+          <button
+            onClick={() => setFullscreenImage(null)}
+            className="absolute top-6 right-6   p-1.5 rounded-full shadow-lg z-50"
+          >
+            <span className="text-xl font-bold text-white">×</span>
+          </button>
+          <img
+            src={fullscreenImage}
+            alt="Fullscreen view"
+            className="max-w-full max-h-full rounded-lg shadow-lg cursor-zoom-out"
+            onClick={() => setFullscreenImage(null)}
+          />
+        </div>
+      )}
     </section>
   );
 }
